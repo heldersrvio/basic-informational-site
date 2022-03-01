@@ -1,31 +1,26 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
 
-const sendContentsOfFile = (
-	filePath,
-	res,
-	statusCode = 200,
-	contentType = 'text/html'
-) => {
-	fs.readFile(filePath, (_err, data) => {
-		res.statusCode = statusCode;
-		res.setHeader('Content-Type', contentType);
-		res.end(data);
-	});
-};
+const app = express();
+const port = 8080;
 
-http
-	.createServer((req, res) => {
-		if (req.url === '/') {
-			sendContentsOfFile('./index.html', res);
-		} else if (req.url === '/about') {
-			sendContentsOfFile('./about.html', res);
-		} else if (req.url === '/contact-me') {
-			sendContentsOfFile('./contact-me.html', res);
-		} else if (req.url === '/styles.css') {
-			sendContentsOfFile('./styles.css', res, 200, 'text/css');
-		} else {
-			sendContentsOfFile('./404.html', res, 404);
-		}
-	})
-	.listen(8080);
+app.use(express.static(__dirname));
+
+app.get('/', (_req, res) => {
+	res.sendFile('index.html', { root: __dirname });
+});
+
+app.get('/about', (_req, res) => {
+	res.sendFile('about.html', { root: __dirname });
+});
+
+app.get('/contact-me', (_req, res) => {
+	res.sendFile('contact-me.html', { root: __dirname });
+});
+
+app.get('*', (_req, res) => {
+	res.sendFile('404.html', { root: __dirname });
+});
+
+app.listen(port, () => {
+	console.log(`Listening on port ${port}...`);
+});

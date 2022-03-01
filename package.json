@@ -18,5 +18,8 @@
 	"homepage": "https://github.com/heldersrvio/basic-informational-site#readme",
 	"devDependencies": {
 		"prettier": "2.5.1"
+	},
+	"dependencies": {
+		"express": "^4.17.3"
 	}
 }
